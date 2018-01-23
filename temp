@@ -1,0 +1,42 @@
+cout << "\n\n=> Enter # to end the connection\n" << endl;
+
+    // Once it reaches here, the client can send a message first.
+
+    do {
+        cout << "Client: ";
+        do {
+            cin >> buffer;
+            send(client, buffer, bufsize, 0);
+            if (*buffer == '#') {
+                send(client, buffer, bufsize, 0);
+                *buffer = '*';
+                isExit = true;
+            }
+        } while (*buffer != 42);
+
+        cout << "Server: ";
+        do {
+            recv(client, buffer, bufsize, 0);
+            cout << buffer << " ";
+            if (*buffer == '#') {
+                *buffer = '*';
+                isExit = true;
+            }
+
+        } while (*buffer != 42);
+        cout << endl;
+
+    } while (!isExit);
+
+    /* ---------------- CLOSE CALL ------------- */
+    /* ----------------- close() --------------- */
+
+    /* 
+        Once the server presses # to end the connection,
+        the loop will break and it will close the server 
+        socket connection and the client connection.
+    */
+
+    cout << "\n=> Connection terminated.\nGoodbye...\n";
+
+    close(client);
